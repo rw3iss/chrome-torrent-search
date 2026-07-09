@@ -3,6 +3,8 @@
 A Chrome extension (Manifest V3) that searches active proxy mirror sites and
 returns their magnet links.
 
+![Proxy Torrent Search popup showing search results](.github/screenshot.png)
+
 ## Install
 
 Chrome extensions distributed outside the Web Store are installed as an unpacked
