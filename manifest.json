@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Proxy Torrent Search",
+  "version": "1.0.0",
+  "description": "Searches active proxy mirror sites for files and returns their magnet links.",
+  "permissions": ["storage", "alarms"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Proxy Torrent Search",
+    "default_popup": "popup.html"
+  }
+}

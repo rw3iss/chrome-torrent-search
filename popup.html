@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Proxy Torrent Search</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="searchbar">
+    <input id="query" type="text" placeholder="Search files…" autocomplete="off" spellcheck="false">
+    <button id="search" title="Search" aria-label="Search">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/>
+      </svg>
+    </button>
+    <button id="close" class="close" title="Clear" aria-label="Clear">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path fill="currentColor" d="M18.3 5.71 12 12l6.3 6.29-1.42 1.42L10.59 13.4 4.3 19.71 2.88 18.3 9.17 12 2.88 5.71 4.3 4.29l6.29 6.3 6.29-6.3z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div id="status" class="status"></div>
+  <div id="results"></div>
+
+  <script src="parser.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

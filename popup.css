@@ -1,0 +1,125 @@
+:root {
+  --bg: #16181d;
+  --panel: #1e2128;
+  --border: #2c3038;
+  --text: #e6e8eb;
+  --muted: #8b93a1;
+  --accent: #4f8cff;
+  --link: #6fa8ff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  width: 640px;
+  max-height: 560px;
+  overflow-y: auto;
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.searchbar {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  z-index: 2;
+}
+
+#query {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+}
+#query:focus { border-color: var(--accent); }
+
+#search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+#search:hover { filter: brightness(1.08); }
+#search:disabled { opacity: .5; cursor: default; }
+
+#close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--muted);
+  cursor: pointer;
+}
+#close:hover { background: #3a2226; border-color: #b3434a; color: #ff7a7a; }
+
+.status {
+  padding: 8px 12px;
+  color: var(--muted);
+  min-height: 0;
+}
+.status:empty { display: none; }
+.status.error { color: #ff7a7a; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+th {
+  background: var(--bg);
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+td.num, th.num { text-align: right; width: 46px; white-space: nowrap; }
+td.copy, th.copy { width: 56px; white-space: nowrap; }
+
+.fname {
+  color: var(--link);
+  text-decoration: none;
+  font-weight: 500;
+}
+.fname:hover { text-decoration: underline; }
+
+.finfo {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.copy-link {
+  color: var(--accent);
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+}
+.copy-link:hover { text-decoration: underline; }
+.copy-link.copied { color: #57c785; }
