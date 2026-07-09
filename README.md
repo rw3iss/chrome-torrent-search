@@ -3,6 +3,33 @@
 A Chrome extension (Manifest V3) that searches active proxy mirror sites and
 returns their magnet links.
 
+## Install
+
+Chrome extensions distributed outside the Web Store are installed as an unpacked
+folder. Pick either option:
+
+### Option A — from a release (recommended)
+
+1. Download `chrome-torrent-search.zip` from the
+   [latest release](https://github.com/rw3iss/chrome-torrent-search/releases/latest).
+2. Unzip it to a folder you'll keep (deleting the folder uninstalls the
+   extension).
+3. Open `chrome://extensions` and enable **Developer mode** (top-right toggle).
+4. Click **Load unpacked** and select the unzipped folder.
+5. The **Proxy Torrent Search** icon appears in the toolbar — click it to search.
+   (Pin it via the puzzle-piece menu if you don't see it.)
+
+### Option B — from source
+
+```sh
+git clone https://github.com/rw3iss/chrome-torrent-search.git
+```
+
+Then follow steps 3–5 above, selecting the cloned folder.
+
+> Note: `.crx` sideloading is blocked by modern Chrome outside the Web Store, so
+> the unpacked-folder method above is the supported way to install.
+
 ## How it works
 
 1. On browser startup / install, the service worker fetches the proxy directory
@@ -17,13 +44,10 @@ returns their magnet links.
    - **Copy** — copies that entry's magnet link to the clipboard.
    - **SE** / **LE** — seeders / leechers.
 
-## Load it
+## Usage
 
-1. Open `chrome://extensions`.
-2. Enable **Developer mode** (top right).
-3. Click **Load unpacked** and select this folder.
-4. Click the extension's toolbar icon to open the search popup (a dropdown
-   anchored to the icon).
+Click the extension's toolbar icon to open the search popup (a dropdown anchored
+to the icon), type a query, and press **Enter** or the search button.
 
 - **Clicking outside** the popup closes it (native popup behaviour), but the
   last search is cached — reopening restores the query and results immediately.
