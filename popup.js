@@ -268,7 +268,12 @@ closeBtn.addEventListener("click", () => {
 // The cache is left intact on close, so reopening restores the last search.
 
 // Restore the previous search (input + results) if one was cached, and warm
-// the mirror cache as soon as the popup opens.
-restoreSession().catch(() => {});
+// the mirror cache as soon as the popup opens. Once restored, focus the input
+// and select its text so typing immediately replaces the previous query.
+restoreSession()
+  .catch(() => {})
+  .finally(() => {
+    queryInput.focus();
+    queryInput.select();
+  });
 getMirrors(false).catch(() => {});
-queryInput.focus();
