@@ -6,8 +6,39 @@ const searchBtn = document.getElementById("search");
 const closeBtn = document.getElementById("close");
 const statusEl = document.getElementById("status");
 const resultsEl = document.getElementById("results");
+const categorySelect = document.getElementById("category");
+const clearTypesBtn = document.getElementById("clearTypes");
+const typeChecks = ["audio", "video", "applications", "games", "other"]
+  .map((id) => document.getElementById(id));
 
 const SESSION_KEY = "lastSearch";
+const OPTIONS_KEY = "searchOptions";
+
+// Collect the category codes: checked type boxes (in display order) followed by
+// the dropdown selection, comma-joined. Defaults to "0" (all) when nothing is
+// chosen, e.g. audio + video + "Applications > UNIX" -> "100,200,303".
+function collectCategories() {
+  const cats = [];
+  typeChecks.forEach((cb) => { if (cb.checked) cats.push(cb.value); });
+  if (categorySelect.value && categorySelect.value !== "0") cats.push(categorySelect.value);
+  return cats.length ? cats.join(",") : "0";
+}
+
+function saveOptions() {
+  const state = { checks: {}, category: categorySelect.value };
+  typeChecks.forEach((cb) => { state.checks[cb.id] = cb.checked; });
+  chrome.storage.local.set({ [OPTIONS_KEY]: state });
+}
+
+async function restoreOptions() {
+  const data = await chrome.storage.local.get(OPTIONS_KEY);
+  const s = data[OPTIONS_KEY];
+  if (!s) return;
+  typeChecks.forEach((cb) => {
+    if (s.checks && cb.id in s.checks) cb.checked = !!s.checks[cb.id];
+  });
+  if (s.category != null) categorySelect.value = s.category;
+}
 
 function saveSession(query, items) {
   chrome.storage.local.set({ [SESSION_KEY]: { query, items } });
@@ -36,8 +67,8 @@ async function getMirrors(force = false) {
   return (cache && cache.mirrors) || [];
 }
 
-function buildSearchUrl(base, query) {
-  return `${base}/search/${encodeURIComponent(query)}/1/99/0`;
+function buildSearchUrl(base, query, cats) {
+  return `${base}/search/${encodeURIComponent(query)}/1/99/${cats || "0"}`;
 }
 
 async function fetchText(url, timeoutMs = 15000) {
@@ -82,10 +113,20 @@ function parseResults(html) {
   const rows = table.querySelectorAll("tr");
   console.log("[proxy-search] scanning", rows.length, "rows");
 
+  let filtered = 0;
   rows.forEach((tr) => {
     // The name link is the row's /torrent/ anchor — present in both templates.
     const nameLink = tr.querySelector('a[href*="/torrent/"]');
     if (!nameLink) return; // header / pagination / ad rows
+
+    // Never surface blocked categories (codes 500-599): drop any row whose
+    // category /browse/ link falls in that range.
+    const catCell = tr.querySelector(".vertTh");
+    const blocked = [...tr.querySelectorAll('a[href*="/browse/"]')].some((a) => {
+      const m = (a.getAttribute("href") || "").match(/\/browse\/(\d+)/);
+      return m && +m[1] >= 500 && +m[1] <= 599;
+    }) || (catCell && /\bporn\b/i.test(catCell.textContent));
+    if (blocked) { filtered++; return; }
 
     const magnetEl = tr.querySelector('a[href^="magnet:"]');
 
@@ -124,7 +165,7 @@ function parseResults(html) {
     });
   });
 
-  console.log("[proxy-search] parsed", out.length, "results");
+  console.log("[proxy-search] parsed", out.length, "results,", filtered, "filtered");
   return out;
 }
 
@@ -222,11 +263,12 @@ async function doSearch() {
       return;
     }
 
+    const cats = collectCategories();
     let lastErr = null;
     for (let i = 0; i < mirrors.length; i++) {
       const base = mirrors[i];
       setStatus(`Searching ${base.replace(/^https?:\/\//, "")}…`);
-      const url = buildSearchUrl(base, query);
+      const url = buildSearchUrl(base, query, cats);
       console.log("[proxy-search] GET", url);
       try {
         const html = await fetchText(url);
@@ -253,7 +295,8 @@ queryInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") doSearch();
 });
 
-// The X clears the input, results, and cache — but leaves the window open.
+// The X clears the input, results, and cache — but leaves the type options
+// alone, and keeps the popup open.
 closeBtn.addEventListener("click", () => {
   clearSession();
   queryInput.value = "";
@@ -262,14 +305,27 @@ closeBtn.addEventListener("click", () => {
   queryInput.focus();
 });
 
+// Persist type options whenever they change so they survive a reopen.
+typeChecks.forEach((cb) => cb.addEventListener("change", saveOptions));
+categorySelect.addEventListener("change", saveOptions);
+
+// "Clear" unchecks every type box and resets the dropdown to "All".
+clearTypesBtn.addEventListener("click", () => {
+  typeChecks.forEach((cb) => { cb.checked = false; });
+  categorySelect.value = "0";
+  saveOptions();
+  queryInput.focus();
+});
+
 // Note: closing when the window loses focus is handled by the OS/window
 // manager for this detached popup. We intentionally do NOT close on `blur`
 // here — a focus bounce at creation time would otherwise close it instantly.
 // The cache is left intact on close, so reopening restores the last search.
 
-// Restore the previous search (input + results) if one was cached, and warm
-// the mirror cache as soon as the popup opens. Once restored, focus the input
-// and select its text so typing immediately replaces the previous query.
+// Restore the previous search (input + results) and the type options if cached,
+// and warm the mirror cache as soon as the popup opens. Once restored, focus the
+// input and select its text so typing immediately replaces the previous query.
+restoreOptions().catch(() => {});
 restoreSession()
   .catch(() => {})
   .finally(() => {

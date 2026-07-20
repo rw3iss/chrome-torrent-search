@@ -20,16 +20,61 @@ body {
   color: var(--text);
 }
 
-.searchbar {
-  display: flex;
-  gap: 8px;
-  padding: 12px;
+.controls {
   position: sticky;
   top: 0;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
   z-index: 2;
 }
+
+.searchbar {
+  display: flex;
+  gap: 8px;
+  padding: 12px 12px 8px;
+}
+
+.typebar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 0 12px 12px;
+}
+
+.chk {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+}
+.chk input { accent-color: var(--accent); cursor: pointer; }
+
+#category {
+  padding: 5px 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+}
+#category:focus { outline: none; border-color: var(--accent); }
+
+#clearTypes {
+  margin-left: auto;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+#clearTypes:hover { color: var(--text); border-color: var(--accent); }
 
 #query {
   flex: 1;

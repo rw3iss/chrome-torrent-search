@@ -6,18 +6,82 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="searchbar">
-    <input id="query" type="text" placeholder="Search files…" autocomplete="off" spellcheck="false">
-    <button id="search" title="Search" aria-label="Search">
-      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-        <path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/>
-      </svg>
-    </button>
-    <button id="close" class="close" title="Clear" aria-label="Clear">
-      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-        <path fill="currentColor" d="M18.3 5.71 12 12l6.3 6.29-1.42 1.42L10.59 13.4 4.3 19.71 2.88 18.3 9.17 12 2.88 5.71 4.3 4.29l6.29 6.3 6.29-6.3z"/>
-      </svg>
-    </button>
+  <div class="controls">
+    <div class="searchbar">
+      <input id="query" type="text" placeholder="Search files…" autocomplete="off" spellcheck="false">
+      <button id="search" title="Search" aria-label="Search">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/>
+        </svg>
+      </button>
+      <button id="close" class="close" title="Clear" aria-label="Clear">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M18.3 5.71 12 12l6.3 6.29-1.42 1.42L10.59 13.4 4.3 19.71 2.88 18.3 9.17 12 2.88 5.71 4.3 4.29l6.29 6.3 6.29-6.3z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="typebar">
+      <label class="chk"><input type="checkbox" id="audio" name="audio" value="100">Audio</label>
+      <label class="chk"><input type="checkbox" id="video" name="video" value="200">Video</label>
+      <label class="chk"><input type="checkbox" id="applications" name="applications" value="300">Applications</label>
+      <label class="chk"><input type="checkbox" id="games" name="games" value="400">Games</label>
+      <label class="chk"><input type="checkbox" id="other" name="other" value="600">Other</label>
+      <select id="category" name="category" title="Category">
+        <option value="0">All</option>
+        <optgroup label="Audio">
+          <option value="101">Music</option>
+          <option value="102">Audio books</option>
+          <option value="103">Sound clips</option>
+          <option value="104">FLAC</option>
+          <option value="199">Other</option>
+        </optgroup>
+        <optgroup label="Video">
+          <option value="201">Movies</option>
+          <option value="202">Movies DVDR</option>
+          <option value="203">Music videos</option>
+          <option value="204">Movie clips</option>
+          <option value="205">TV shows</option>
+          <option value="206">Handheld</option>
+          <option value="207">HD - Movies</option>
+          <option value="208">HD - TV shows</option>
+          <option value="209">3D</option>
+          <option value="210">CAM/TS</option>
+          <option value="211">UHD/4k - Movies</option>
+          <option value="212">UHD/4k - TV shows</option>
+          <option value="299">Other</option>
+        </optgroup>
+        <optgroup label="Applications">
+          <option value="301">Windows</option>
+          <option value="302">Mac</option>
+          <option value="303">UNIX</option>
+          <option value="304">Handheld</option>
+          <option value="305">IOS (iPad/iPhone)</option>
+          <option value="306">Android</option>
+          <option value="399">Other OS</option>
+        </optgroup>
+        <optgroup label="Games">
+          <option value="401">PC</option>
+          <option value="402">Mac</option>
+          <option value="403">PSx</option>
+          <option value="404">XBOX360</option>
+          <option value="405">Wii</option>
+          <option value="406">Handheld</option>
+          <option value="407">IOS (iPad/iPhone)</option>
+          <option value="408">Android</option>
+          <option value="499">Other</option>
+        </optgroup>
+        <optgroup label="Other">
+          <option value="601">E-books</option>
+          <option value="602">Comics</option>
+          <option value="603">Pictures</option>
+          <option value="604">Covers</option>
+          <option value="605">Physibles</option>
+          <option value="699">Other</option>
+        </optgroup>
+      </select>
+      <button id="clearTypes" class="cleartypes" title="Uncheck all types">Clear</button>
+    </div>
   </div>
 
   <div id="status" class="status"></div>

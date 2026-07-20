@@ -38,8 +38,11 @@ Then follow steps 3–5 above, selecting the cloned folder.
    at `https://piratebayproxy.info/`, keeps every mirror whose status is **up**,
    and caches the primary + 2 backups in `chrome.storage.local`.
 2. The popup reads that cache. Typing a query and pressing **Enter** (or the
-   search button) requests `<mirror>/search/<url-encoded-query>/1/99/0` from the
-   first working mirror, falling back to backups if one is unreachable.
+   search button) requests `<mirror>/search/<url-encoded-query>/1/99/<cats>` from
+   the first working mirror, falling back to backups if one is unreachable. The
+   type checkboxes and category dropdown under the input set `<cats>` (a
+   comma-separated list of category codes, or `0` for all); **Clear** resets
+   them. Certain categories (codes 500–599) are always excluded from results.
 3. The results table is scraped and rendered below the search box:
    - **File** — file name (links to the torrent detail page) with the size /
      date info line beneath it.
